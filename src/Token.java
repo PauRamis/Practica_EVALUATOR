@@ -60,14 +60,23 @@ public class Token {
 
     // A partir d'un String, torna una llista de tokens
     public static Token[] getTokens(String expr) {
-        String[] charList = expr.split(" ");
+        String[] charList = expr.split("");
         Token[] tokenList = new Token[expr.length()];
+        int stack = 0;
 
         for (int i = 0; i < expr.length(); i++) {
-            String  c = charList[i];
-
+            String c = charList[i];
+            if (c.matches("\\d+"))
+                stack += Integer.parseInt(c);
+            else {
+                tokenList[i] = tokNumber(stack);
+                stack = 0;
+            }
+            if (c.matches("[()]"))
+                tokenList[i] = tokOp(c.charAt(0));
+            else
+                tokenList[i] = tokParen(c.charAt(0));
         }
-
         return tokenList;
     }
 }
