@@ -53,11 +53,11 @@ public class Token {
 
     // Mostra un token (conversió a String)
     public String toString() {
-        String valueS = null;
+        String valueS;
         if (this.ttype == Toktype.NUMBER) {
             valueS = String.valueOf(this.value);
         }
-        valueS = String.valueOf(this.tk);
+        else valueS = String.valueOf(this.tk);
         return valueS;
     }
 
