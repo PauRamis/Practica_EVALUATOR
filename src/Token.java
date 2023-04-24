@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class Token {
     enum Toktype {
         NUMBER, OP, PAREN
@@ -55,28 +58,35 @@ public class Token {
 
     // Mètode equals. Comprova si dos objectes Token són iguals
     public boolean equals(Object o) {
-        return false;
+        Token t = (Token) o;
+        if (t.ttype != this.ttype) return false;
+        if (t.ttype == Toktype.NUMBER){
+            return t.value == this.value;
+        } else
+            return t.tk == this.tk;
     }
 
     // A partir d'un String, torna una llista de tokens
     public static Token[] getTokens(String expr) {
-        String[] charList = expr.split("");
-        Token[] tokenList = new Token[expr.length()];
-        int stack = 0;
+        List<Token> tokenList = new ArrayList<>();
+        String stack = "";
 
         for (int i = 0; i < expr.length(); i++) {
-            String c = charList[i];
-            if (c.matches("\\d+"))
-                stack += Integer.parseInt(c);
-            else {
-                tokenList[i] = tokNumber(stack);
-                stack = 0;
+            char c = expr.charAt(i);
+            if (c >= '0' && c <= '9')
+                stack += c;
+            else if (!stack.equals("")){
+                tokenList.add(tokNumber(Integer.parseInt(stack)));
+                stack = "";
             }
-            if (c.matches("[()]"))
-                tokenList[i] = tokOp(c.charAt(0));
-            else
-                tokenList[i] = tokParen(c.charAt(0));
+            if (c == '(' || c == ')')
+                tokenList.add(tokParen(c));
+            if (c == '/' || c == '*' || c == '-' || c == '+')
+                tokenList.add((tokOp(c)));
         }
-        return tokenList;
+        //Al acabar el numero, acaba el bulce i hem de usar el que tenim a stack
+        if (!stack.equals(""))
+            tokenList.add(tokNumber(Integer.parseInt(stack)));
+        return tokenList.toArray(new Token[0]);
     }
 }
