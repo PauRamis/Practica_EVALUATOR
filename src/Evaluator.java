@@ -16,7 +16,7 @@ public class Evaluator {
         Token[] output = new Token[tokens.length];
 
         //FIND THE RIGHT PATTERN!!!
-        //Posam els tokens a l'output, amb l'ajuda d'un stack d'operadors
+        //Posem els tokens a l'output, amb l'ajuda d'un stack d'operadors
         for (int i = 0; i < tokens.length; i++) {
             if (tokens[i].getTtype() == Token.Toktype.NUMBER)
                 output[i] = tokens[i];
@@ -29,11 +29,11 @@ public class Evaluator {
     public static int calcRPN(Token[] list) {
         // Calcula el valor resultant d'avaluar la llista de tokens
         Stack<Token> numberStack = new Stack<>();
-        for (int i = 0; i < list.length; i++) {
-            if (list[i].getTtype() == Token.Toktype.NUMBER)
-                numberStack.add(list[i]);
+        for (Token token : list) {
+            if (token.getTtype() == Token.Toktype.NUMBER)
+                numberStack.add(token);
             else {
-                char op = list[i].getTk();
+                char op = token.getTk();
                 int b = numberStack.pop().getValue();
                 int a = numberStack.pop().getValue();
                 int r = operate(a, b, op);

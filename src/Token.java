@@ -89,7 +89,7 @@ public class Token {
             if (c == '/' || c == '*' || c == '-' || c == '+')
                 tokenList.add((tokOp(c)));
         }
-        //Al acabar el numero, acaba el bulce i hem de usar el que tenim a stack
+        //Al acabar el número, acaba el bucle i hem d'usar el que tenim a stack
         if (!stack.equals(""))
             tokenList.add(tokNumber(Integer.parseInt(stack)));
         return tokenList.toArray(new Token[0]);
