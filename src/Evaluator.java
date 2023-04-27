@@ -13,20 +13,20 @@ public class Evaluator {
 
     private static Token[] convertRPN(Token[] tokens) {
         Stack<Token> operatorStack = new Stack<>();
-        Stack<Token> numberStack = new Stack<>();
+        Stack<Token> outputStack = new Stack<>();
 
         //FIND THE RIGHT PATTERN!!!
         //Posem els tokens a l'output, amb l'ajuda d'un stack d'operadors
         for (int i = 0; i < tokens.length; i++) {
-            if (tokens[i].getTtype() == Token.Toktype.NUMBER) {
-                numberStack.add(tokens[i]);
-                if (!operatorStack.isEmpty())
-                    numberStack.add(operatorStack.pop());
+            if (tokens[i].getTtype() == Token.Toktype.NUMBER){
+                outputStack.add(tokens[i]);
+            if (!operatorStack.isEmpty())
+                outputStack.add(operatorStack.pop());
             } else
                 operatorStack.add(tokens[i]);
         }
 
-        return numberStack.toArray(new Token[0]);
+        return outputStack.toArray(new Token[0]);
     }
 
     public static int calcRPN(Token[] list) {
