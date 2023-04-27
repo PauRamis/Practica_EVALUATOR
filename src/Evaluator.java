@@ -13,17 +13,20 @@ public class Evaluator {
 
     private static Token[] convertRPN(Token[] tokens) {
         Stack<Token> operatorStack = new Stack<>();
-        Token[] output = new Token[tokens.length];
+        Stack<Token> numberStack = new Stack<>();
 
         //FIND THE RIGHT PATTERN!!!
         //Posem els tokens a l'output, amb l'ajuda d'un stack d'operadors
         for (int i = 0; i < tokens.length; i++) {
-            if (tokens[i].getTtype() == Token.Toktype.NUMBER)
-                output[i] = tokens[i];
-            else operatorStack.add(tokens[i]);
+            if (tokens[i].getTtype() == Token.Toktype.NUMBER) {
+                numberStack.add(tokens[i]);
+                if (!operatorStack.isEmpty())
+                    numberStack.add(operatorStack.pop());
+            } else
+                operatorStack.add(tokens[i]);
         }
 
-        return output;
+        return numberStack.toArray(new Token[0]);
     }
 
     public static int calcRPN(Token[] list) {
@@ -45,13 +48,13 @@ public class Evaluator {
 
     private static int operate(int a, int b, char op) {
         if (op == '+')
-            return a+b;
+            return a + b;
         if (op == '-')
-            return a-b;
+            return a - b;
         if (op == '*')
-            return a*b;
+            return a * b;
         if (op == '/')
-            return a/b;
+            return a / b;
         throw new RuntimeException("Not known operator");
     }
 }
