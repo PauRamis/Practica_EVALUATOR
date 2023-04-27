@@ -16,6 +16,7 @@ public class Evaluator {
         Token[] output = new Token[tokens.length];
 
         //FIND THE RIGHT PATTERN!!!
+        //Posam els tokens a l'output, amb l'ajuda d'un stack d'operadors
         for (int i = 0; i < tokens.length; i++) {
             if (tokens[i].getTtype() == Token.Toktype.NUMBER)
                 output[i] = tokens[i];
