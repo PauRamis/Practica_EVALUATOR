@@ -28,6 +28,32 @@ public class Evaluator {
 
     public static int calcRPN(Token[] list) {
         // Calcula el valor resultant d'avaluar la llista de tokens
-        return 0;
+        Stack<Token> numberStack = new Stack<>();
+        for (int i = 0; i < list.length; i++) {
+            if (list[i].getTtype() == Token.Toktype.NUMBER)
+                numberStack.add(list[i]);
+            else {
+                char op = list[i].getTk();
+                int b = numberStack.pop().getValue();
+                int a = numberStack.pop().getValue();
+                int r = operate(a, b, op);
+                numberStack.add(Token.tokNumber(r));
+            }
+        }
+        return numberStack.pop().getValue();
+    }
+
+    private static int operate(int a, int b, char op) {
+        int r;
+        if (op == '+')
+            r = a+b;
+        else if (op == '-')
+            r = a-b;
+        else if (op == '*')
+            r = a*b;
+        else if (op == '/')
+            r = a/b;
+        else throw new RuntimeException("Not known operator");
+        return r;
     }
 }
