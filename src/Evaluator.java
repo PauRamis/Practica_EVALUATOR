@@ -44,16 +44,14 @@ public class Evaluator {
     }
 
     private static int operate(int a, int b, char op) {
-        int r;
         if (op == '+')
-            r = a+b;
-        else if (op == '-')
-            r = a-b;
-        else if (op == '*')
-            r = a*b;
-        else if (op == '/')
-            r = a/b;
-        else throw new RuntimeException("Not known operator");
-        return r;
+            return a+b;
+        if (op == '-')
+            return a-b;
+        if (op == '*')
+            return a*b;
+        if (op == '/')
+            return a/b;
+        throw new RuntimeException("Not known operator");
     }
 }
