@@ -31,7 +31,7 @@ public class Evaluator {
                 }
             } else {
                 if (lastOp != null)
-                    if (priorityPass(lastOp, outputStack.peek())) {
+                    if (priorityPass(lastOp, tokens[i])) {
                         temp = outputStack.pop();
                     }
                 operatorStack.add(tokens[i]);
