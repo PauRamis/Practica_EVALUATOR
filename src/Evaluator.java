@@ -17,25 +17,30 @@ public class Evaluator {
         Token lastOp = null;
         Token temp = null;
 
-        //FIND THE RIGHT PATTERN!!!
         //Posem els tokens a l'output, amb l'ajuda d'un stack temporal d'operadors
-        for (int i = 0; i < tokens.length; i++) {
-            if (tokens[i].getTtype() == Token.Toktype.NUMBER) {
-                outputStack.add(tokens[i]);
+        for (Token token : tokens) {
+            //Si és un nombre
+            if (token.getTtype() == Token.Toktype.NUMBER) {
+                outputStack.add(token);
+                //Si tenim un operador en cua
                 if (!operatorStack.isEmpty()) {
                     outputStack.add(operatorStack.pop());
+                    //Si hi havia un altre operador de menor prioritat esperant
                     if (temp != null) {
                         outputStack.add(temp);
                         temp = null;
                     }
                 }
-            } else {
+            }
+            //Si és un operador
+            else {
+                //Comprovem si hi ha hagut un altre operador
                 if (lastOp != null)
-                    if (priorityPass(outputStack.peek(), tokens[i])) {
+                    if (priorityPass(outputStack.peek(), token)) {
                         temp = outputStack.pop();
                     }
-                operatorStack.add(tokens[i]);
-                lastOp = tokens[i];
+                operatorStack.add(token);
+                lastOp = token;
             }
         }
 
