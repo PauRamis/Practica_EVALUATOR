@@ -16,12 +16,19 @@ public class Evaluator {
         Stack<Token> outputStack = new Stack<>();
         Token lastOp = null;
         Token temp = null;
+        boolean unariOp = false;
 
         //Posem els tokens a l'output, amb l'ajuda d'un stack temporal d'operadors
-        for (Token token : tokens) {
-            //Si és un nombre
+        //Si és un nombre
+        for (Token token : tokens)
             if (token.getTtype() == Token.Toktype.NUMBER) {
-                outputStack.add(token);
+                if (!unariOp)
+                    outputStack.add(token);
+                else{
+                    //Si antes hi havia un operador unari, ara el valor del token es negatiu
+                    Token negativeToken = Token.tokNumber(-token.getValue());
+                    outputStack.add(negativeToken);
+                }
                 //Si tenim un operador en cua
                 if (!operatorStack.isEmpty()) {
                     outputStack.add(operatorStack.pop());
@@ -34,15 +41,18 @@ public class Evaluator {
             }
             //Si és un operador
             else {
+                //Si és el primer o ja hi havia un operador, és unari
+                if (token.getTk() == '-' && (outputStack.isEmpty() || !operatorStack.isEmpty())) {
+
+                }
                 //Comprovem si hi ha hagut un altre operador
-                if (lastOp != null)
+                else if (lastOp != null)
                     if (priorityPass(outputStack.peek(), token)) {
                         temp = outputStack.pop();
                     }
                 operatorStack.add(token);
                 lastOp = token;
             }
-        }
 
         return outputStack.toArray(new Token[0]);
     }
