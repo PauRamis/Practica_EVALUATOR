@@ -14,19 +14,47 @@ public class Evaluator {
     private static Token[] convertRPN(Token[] tokens) {
         Stack<Token> operatorStack = new Stack<>();
         Stack<Token> outputStack = new Stack<>();
+        Token lastOp = null;
+        Token temp = null;
 
         //FIND THE RIGHT PATTERN!!!
-        //Posem els tokens a l'output, amb l'ajuda d'un stack d'operadors
+        //Posem els tokens a l'output, amb l'ajuda d'un stack temporal d'operadors
         for (int i = 0; i < tokens.length; i++) {
-            if (tokens[i].getTtype() == Token.Toktype.NUMBER){
+            if (tokens[i].getTtype() == Token.Toktype.NUMBER) {
                 outputStack.add(tokens[i]);
-            if (!operatorStack.isEmpty())
-                outputStack.add(operatorStack.pop());
-            } else
+                if (!operatorStack.isEmpty())
+                    outputStack.add(operatorStack.pop());
+                if (temp != null){
+                    outputStack.add(temp);
+                    temp = null;
+                }
+            } else {
+                if (priorityPass(lastOp, outputStack.peek())){
+                    temp = outputStack.pop();
+                }
                 operatorStack.add(tokens[i]);
+                lastOp = tokens[i];
+            }
         }
 
         return outputStack.toArray(new Token[0]);
+    }
+
+    //mirem si currentOp té més prioritat que l'anterior
+    private static boolean priorityPass(Token lastOp, Token currentOp) {
+        int lastP = assignPriority(lastOp);
+        int currP = assignPriority(currentOp);
+        return lastP < currP;
+    }
+
+    private static int assignPriority(Token op) {
+        if (op.getTk() == '+' || op.getTk() == '-')
+            return 1;
+        if (op.getTk() == '*' || op.getTk() == '/')
+            return 2;
+        if (op.getTk() == '^')
+            return 3;
+        throw new RuntimeException("Not valid op");
     }
 
     public static int calcRPN(Token[] list) {
