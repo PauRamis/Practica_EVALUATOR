@@ -22,16 +22,18 @@ public class Evaluator {
         for (int i = 0; i < tokens.length; i++) {
             if (tokens[i].getTtype() == Token.Toktype.NUMBER) {
                 outputStack.add(tokens[i]);
-                if (!operatorStack.isEmpty())
+                if (!operatorStack.isEmpty()) {
                     outputStack.add(operatorStack.pop());
-                if (temp != null){
-                    outputStack.add(temp);
-                    temp = null;
+                    if (temp != null) {
+                        outputStack.add(temp);
+                        temp = null;
+                    }
                 }
             } else {
-                if (priorityPass(lastOp, outputStack.peek())){
-                    temp = outputStack.pop();
-                }
+                if (lastOp != null)
+                    if (priorityPass(lastOp, outputStack.peek())) {
+                        temp = outputStack.pop();
+                    }
                 operatorStack.add(tokens[i]);
                 lastOp = tokens[i];
             }
@@ -48,6 +50,8 @@ public class Evaluator {
     }
 
     private static int assignPriority(Token op) {
+        if (op == null)
+            return 0;
         if (op.getTk() == '+' || op.getTk() == '-')
             return 1;
         if (op.getTk() == '*' || op.getTk() == '/')
