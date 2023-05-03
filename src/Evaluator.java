@@ -28,6 +28,7 @@ public class Evaluator {
                     //Si antes hi havia un operador unari, ara el valor del token es negatiu
                     Token negativeToken = Token.tokNumber(-token.getValue());
                     outputStack.add(negativeToken);
+                    unariOp = false;
                 }
                 //Si tenim un operador en cua
                 if (!operatorStack.isEmpty()) {
@@ -41,9 +42,12 @@ public class Evaluator {
             }
             //Si és un operador
             else {
+                if (token.getTk() == '(' || token.getTk() == ')')
+                    continue;
                 //Si és el primer o ja hi havia un operador, és unari
                 if (token.getTk() == '-' && (outputStack.isEmpty() || !operatorStack.isEmpty())) {
-
+                    unariOp = true;
+                    continue;
                 }
                 //Comprovem si hi ha hagut un altre operador
                 else if (lastOp != null)
