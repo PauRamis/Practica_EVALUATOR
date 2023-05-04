@@ -63,7 +63,7 @@ public class EvaluatorTest {
 
     @Test
     public void tests_opUnari() {
-        //assertEquals(-6, Evaluator.calculate("-(1+5)"));
+        assertEquals(-6, Evaluator.calculate("-(1+5)"));
         assertEquals(1, Evaluator.calculate("-8+9"));
         assertEquals(-7, Evaluator.calculate("-1*7"));
         assertEquals(63, Evaluator.calculate("-9*-7"));
